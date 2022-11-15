@@ -1,11 +1,11 @@
 package datos;
 
-import domain.Usuario;
+import domain.UsuarioDTO;
 
 import java.sql.*;
 import java.util.*;
 
-public class UsuarioDAO {
+public class UsuarioDaoJDBC implements UsuarioDao{
 
     private Connection conexionTransaccional;
     private static final String SQL_SELECT = "SELECT id_usuario, usuario, password FROM usuario";
@@ -13,19 +13,19 @@ public class UsuarioDAO {
     private static final String SQL_UPDATE = "UPDATE usuario SET usuario = ?, password = ? WHERE id_usuario = ?";
     private static final String SQL_DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
 
-    public UsuarioDAO() {
+    public UsuarioDaoJDBC() {
 
     }
-    public UsuarioDAO(Connection conexionTransaccional) {
+    public UsuarioDaoJDBC(Connection conexionTransaccional) {
         this.conexionTransaccional = conexionTransaccional;
     }
 
-    public List<Usuario> seleccionar() throws SQLException {
+    public List<UsuarioDTO> select() throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Usuario user = null;
-        List<Usuario> usuarios = new ArrayList<>();
+        UsuarioDTO user = null;
+        List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
 
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
@@ -35,8 +35,8 @@ public class UsuarioDAO {
                 int idUsuario = rs.getInt("id_usuario");
                 String usuario = rs.getString("usuario");
                 String password = rs.getString("password");
-                user = new Usuario(idUsuario, usuario, password);
-                usuarios.add(user);
+                user = new UsuarioDTO(idUsuario, usuario, password);
+                usuarioDTOS.add(user);
             }
         } finally {
             try {
@@ -49,18 +49,18 @@ public class UsuarioDAO {
                 ex.printStackTrace(System.out);
             }
         }
-        return usuarios;
+        return usuarioDTOS;
     }
 
-    public int insertar(Usuario usuario) throws SQLException {
+    public int insert(UsuarioDTO usuarioDTO) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int rows = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
-            stmt.setString(1, usuario.getUsuario());
-            stmt.setString(2, usuario.getPassword());
+            stmt.setString(1, usuarioDTO.getUsuario());
+            stmt.setString(2, usuarioDTO.getPassword());
             System.out.println("Ejecutando query: " + SQL_INSERT);
             rows = stmt.executeUpdate();
             System.out.println("Registros afectados: " + rows);
@@ -78,16 +78,16 @@ public class UsuarioDAO {
         return rows;
     }
 
-    public int update(Usuario usuario) throws SQLException {
+    public int update(UsuarioDTO usuarioDTO) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int rows = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_UPDATE);
-            stmt.setString(1, usuario.getUsuario());
-            stmt.setString(2, usuario.getPassword());
-            stmt.setInt(3, usuario.getIdUsuario());
+            stmt.setString(1, usuarioDTO.getUsuario());
+            stmt.setString(2, usuarioDTO.getPassword());
+            stmt.setInt(3, usuarioDTO.getIdUsuario());
             System.out.println("Ejecutando query: " + SQL_UPDATE);
             rows = stmt.executeUpdate();
             System.out.println("Registros afectados: " + rows);
@@ -104,14 +104,14 @@ public class UsuarioDAO {
         return rows;
     }
 
-    public int delete(Usuario usuario) throws SQLException {
+    public int delete(UsuarioDTO usuarioDTO) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int rows = 0;
         try {
             conn = this.conexionTransaccional != null ? this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_DELETE);
-            stmt.setInt(1, usuario.getIdUsuario());
+            stmt.setInt(1, usuarioDTO.getIdUsuario());
             System.out.println("Ejecutando query: " + SQL_DELETE);
             rows = stmt.executeUpdate();
         } finally {

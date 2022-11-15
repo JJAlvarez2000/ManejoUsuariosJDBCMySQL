@@ -1,23 +1,23 @@
 package domain;
 
-public class Usuario {
+public class UsuarioDTO {
     private int idUsuario;
     private String usuario;
     private String password;
 
-    public Usuario() {
+    public UsuarioDTO() {
     }
 
-    public Usuario(int idUsuario) {
+    public UsuarioDTO(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(String usuario, String password) {
+    public UsuarioDTO(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
     }
 
-    public Usuario(int idUsuario, String usuario, String password) {
+    public UsuarioDTO(int idUsuario, String usuario, String password) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.password = password;
@@ -49,6 +49,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "idUsuario=" + idUsuario + ", usuario=" + usuario + ", password=" + password + '}';
+        return "UsuarioDTO{" + "idUsuario=" + idUsuario + ", usuario=" + usuario + ", password=" + password + '}';
     }
 }

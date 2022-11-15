@@ -1,8 +1,7 @@
 import datos.*;
-import domain.Usuario;
+import domain.UsuarioDTO;
 
 import java.sql.*;
-import java.util.List;
 
 public class TestManejoUsuarios {
     public static void main(String[] args) {
@@ -14,12 +13,12 @@ public class TestManejoUsuarios {
                 conexion.setAutoCommit(false);
             }
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO(conexion);
+            UsuarioDaoJDBC usuarioDAO = new UsuarioDaoJDBC(conexion);
 
-            Usuario updateUsuario = new Usuario(3, "CoscuMarica", "12345");
-            usuarioDAO.update(updateUsuario);
-            Usuario newUsuario = new Usuario("FrodoCrack", "12345");
-            usuarioDAO.insertar(newUsuario);
+            UsuarioDTO updateUsuarioDTO = new UsuarioDTO(3, "CoscuMarica", "12345");
+            usuarioDAO.update(updateUsuarioDTO);
+            UsuarioDTO newUsuarioDTO = new UsuarioDTO("FrodoCrack", "12345");
+            usuarioDAO.insert(newUsuarioDTO);
 
             conexion.commit();
             System.out.println("Se ha hecho commit de la transacción");
